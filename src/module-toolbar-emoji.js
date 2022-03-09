@@ -61,30 +61,50 @@ function fn_updateRange(quill){
 
 function fn_showEmojiPalatte(quill) {
   let ele_emoji_area = document.createElement('div');
-  let toolbar_container = document.querySelector('.ql-toolbar');
-  let range = quill.getSelection();
-  const atSignBounds = quill.getBounds(range.index);
 
-  quill.container.appendChild(ele_emoji_area);
-  const editorCenter = quill.container.offsetWidth / 2;
-  const editorMiddle = quill.container.offsetHeight / 2;
-  const selectionCenter = (atSignBounds.left + atSignBounds.right) / 2;
-  const selectionMiddle = (atSignBounds.top + atSignBounds.bottom) / 2;
-  let paletteMaxPos = atSignBounds.left + 250;//palette max width is 250
-  ele_emoji_area.id = 'emoji-palette';
-  ele_emoji_area.style.top = 10 + atSignBounds.top + atSignBounds.height + "px";
+  const placePaletteOnToolbar = document.querySelector('.modal .ql-emoji');
 
-  if (selectionCenter < editorCenter) {
-    ele_emoji_area.style.left = selectionCenter + "px";
+  if (placePaletteOnToolbar) {
+    const toolbarButton = document.querySelector('.ql-emoji');
+
+    const toolbarButtonBoundingClientRect = toolbarButton.getBoundingClientRect();
+    const toolbarButtonHorizontalCenter = (toolbarButtonBoundingClientRect.left + toolbarButtonBoundingClientRect.right) / 2;
+    const toolbarButtonVerticalCenter = (toolbarButtonBoundingClientRect.top + toolbarButtonBoundingClientRect.bottom) / 2;
+    const paletteLeft =
+      toolbarButtonHorizontalCenter - (paletteWidthAndHeight / 2) >= 0 &&
+      toolbarButtonHorizontalCenter + (paletteWidthAndHeight / 2) <= document.documentElement.clientWidth ?
+        toolbarButtonHorizontalCenter - (paletteWidthAndHeight / 2) :
+        toolbarButtonHorizontalCenter - (paletteWidthAndHeight / 2) < 0 ?
+          0 :
+          document.documentElement.clientWidth - paletteWidthAndHeight;
+    const paletteTop =
+      toolbarButtonVerticalCenter + paletteWidthAndHeight + 10 <= document.documentElement.clientHeight ?
+        toolbarButtonVerticalCenter + 10 :
+        toolbarButtonVerticalCenter - paletteWidthAndHeight - 10 >= 0 ?
+          toolbarButtonVerticalCenter - paletteWidthAndHeight - 10 :
+          document.documentElement.clientHeight - paletteWidthAndHeight;
+
+    document.getElementsByTagName('body')[0].appendChild(ele_emoji_area);
+    ele_emoji_area.id = 'emoji-palette';
+    ele_emoji_area.style.left = `${paletteLeft}px`;
+    ele_emoji_area.style.top = `${paletteTop}px`;
   } else {
-    ele_emoji_area.style.left = (selectionCenter - 250) + "px";
+    let selection = quill.getSelection();
+    const selectionBounds = quill.getBounds(selection.index);
+    const editorBounds = quill.container.getBoundingClientRect();
+    const selectionCenter = (selectionBounds.left + selectionBounds.right) / 2;
+    const selectionMiddle = (selectionBounds.top + selectionBounds.bottom) / 2;
+    const paletteLeft = editorBounds.left + selectionCenter + paletteWidthAndHeight <= document.documentElement.clientWidth ? selectionCenter : editorBounds.left - paletteWidthAndHeight;
+    const paletteTop = editorBounds.top + selectionMiddle + paletteWidthAndHeight + 10 <= document.documentElement.clientHeight ? selectionMiddle + 10 :
+      editorBounds.top + selectionMiddle - paletteWidthAndHeight - 10 >= 0 ? selectionMiddle - paletteWidthAndHeight - 10 :
+        document.documentElement.clientHeight - paletteWidthAndHeight - editorBounds.top;
+
+    quill.container.appendChild(ele_emoji_area);
+    ele_emoji_area.id = 'emoji-palette';
+    ele_emoji_area.style.left = `${paletteLeft}px`;
+    ele_emoji_area.style.top = `${paletteTop}px`;
   }
 
-  if (selectionMiddle < editorMiddle) {
-    ele_emoji_area.style.top = (selectionMiddle) + "px";
-  } else {
-    ele_emoji_area.style.top = (selectionMiddle - 250) + "px";
-  }
 
   let tabToolbar = document.createElement('div');
   tabToolbar.id="tab-toolbar";
