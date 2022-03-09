@@ -61,6 +61,7 @@ function fn_updateRange(quill){
 
 function fn_showEmojiPalatte(quill) {
   let ele_emoji_area = document.createElement('div');
+  const paletteWidthAndHeight = 250;
 
   const placePaletteOnToolbar = document.querySelector('.modal .ql-emoji');
 
