@@ -63,7 +63,10 @@ function fn_showEmojiPalatte(quill) {
   let ele_emoji_area = document.createElement('div');
   const paletteWidthAndHeight = 250;
 
-  const toolbarButton = document.querySelector('.ql-emoji');
+  const toolbarButton = quill
+    .getModule('toolbar')
+    .container
+    .querySelector('.ql-emoji');
 
   const toolbarButtonBoundingClientRect = toolbarButton.getBoundingClientRect();
   const toolbarButtonHorizontalCenter = (toolbarButtonBoundingClientRect.left + toolbarButtonBoundingClientRect.right) / 2;
