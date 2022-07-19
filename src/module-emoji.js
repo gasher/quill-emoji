@@ -193,7 +193,7 @@ class ShortNameEmoji extends Module {
         'li', {},
         makeElement(
           'button', {type: "button"},
-          makeElement("span", {className: "button-emoji ap ap-" + emoji.name, innerHTML: emoji.code_decimal }),
+          makeElement("span", {className: "button-emoji tw tw-" + emoji.name, innerHTML: emoji.code_decimal }),
           //makeElement('span', {className: "matched"}, this.query),
           //makeElement('span', {className: "unmatched"}, emoji.shortname.slice(this.query.length+1))
           makeElement('span', {className: "unmatched"}, emoji.shortname)

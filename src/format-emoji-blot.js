@@ -41,7 +41,7 @@ class EmojiBlot extends Embed {
 EmojiBlot.blotName = 'emoji';
 EmojiBlot.className = 'ql-emojiblot';
 EmojiBlot.tagName = 'span';
-EmojiBlot.emojiClass = 'ap';
-EmojiBlot.emojiPrefix = 'ap-';
+EmojiBlot.emojiClass = 'tw';
+EmojiBlot.emojiPrefix = 'tw-';
 
 export default EmojiBlot;
